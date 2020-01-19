@@ -12,10 +12,6 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/fluxcd/flux/pkg/api"
-	"github.com/fluxcd/flux/pkg/api/v10"
-	"github.com/fluxcd/flux/pkg/api/v11"
-	"github.com/fluxcd/flux/pkg/api/v6"
-	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/cluster"
 	"github.com/fluxcd/flux/pkg/event"
 	"github.com/fluxcd/flux/pkg/git"
@@ -624,7 +620,7 @@ func (d *Daemon) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConf
 	origin := d.Repo.Origin()
 	// Sanitize the URL before sharing it
 	origin.URL = origin.SafeURL()
-	status, _ := d.Repo.Status()
+	status, err := d.Repo.Status()
 	path := ""
 	if len(d.GitConfig.Paths) > 0 {
 		path = strings.Join(d.GitConfig.Paths, ",")
@@ -637,6 +633,7 @@ func (d *Daemon) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConf
 		},
 		PublicSSHKey: publicSSHKey,
 		Status:       status,
+		Error:        err.Error(),
 	}, nil
 }
 

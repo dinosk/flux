@@ -46,7 +46,7 @@ func (opts *syncOpts) RunE(cmd *cobra.Command, args []string) error {
 	case git.RepoReady:
 		break
 	default:
-		return fmt.Errorf("git repository %s is not ready to sync (status: %s)", gitConfig.Remote.URL, string(gitConfig.Status))
+		return fmt.Errorf("git repository %s is not ready to sync (full error: %s)", gitConfig.Remote.URL, gitConfig.Error)
 	}
 
 	fmt.Fprintf(cmd.OutOrStderr(), "Synchronizing with %s\n", gitConfig.Remote.URL)
