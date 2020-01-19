@@ -11,6 +11,7 @@ import (
 	"github.com/fluxcd/flux/pkg/api"
 	"github.com/fluxcd/flux/pkg/api/v10"
 	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
 	"github.com/fluxcd/flux/pkg/api/v6"
 	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/guid"
@@ -49,6 +50,9 @@ type MockServer struct {
 
 	GitRepoConfigAnswer v6.GitConfig
 	GitRepoConfigError  error
+
+	GitRepoConfigWithErrorAnswer v12.GitConfig
+	GitRepoConfigWithErrorError  error
 }
 
 func (p *MockServer) Ping(ctx context.Context) error {
@@ -102,6 +106,10 @@ func (p *MockServer) JobStatus(context.Context, job.ID) (job.Status, error) {
 
 func (p *MockServer) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConfig, error) {
 	return p.GitRepoConfigAnswer, p.GitRepoConfigError
+}
+
+func (p *MockServer) GitRepoConfigWithError(ctx context.Context, regenerate bool) (v12.GitConfig, error) {
+	return p.GitRepoConfigWithErrorAnswer, p.GitRepoConfigWithErrorError
 }
 
 var _ api.Server = &MockServer{}

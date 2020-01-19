@@ -43,6 +43,7 @@ func NewAPIRouter() *mux.Router {
 	r.NewRoute().Name(SyncStatus).Methods("GET").Path("/v6/sync").Queries("ref", "{ref}")
 	r.NewRoute().Name(Export).Methods("HEAD", "GET").Path("/v6/export")
 	r.NewRoute().Name(GitRepoConfig).Methods("POST").Path("/v9/git-repo-config")
+	r.NewRoute().Name(GitRepoConfigWithError).Methods("POST").Path("/v12/git-repo-config-with-error")
 
 	// These routes persist to support requests from older fluxctls. In general we
 	// should avoid adding references to them so that they can eventually be removed.
@@ -63,6 +64,7 @@ func UpstreamRoutes(r *mux.Router) {
 	r.NewRoute().Name(RegisterDaemonV9).Methods("GET").Path("/v9/daemon")
 	r.NewRoute().Name(RegisterDaemonV10).Methods("GET").Path("/v10/daemon")
 	r.NewRoute().Name(RegisterDaemonV11).Methods("GET").Path("/v11/daemon")
+	r.NewRoute().Name(RegisterDaemonV12).Methods("GET").Path("/v12/daemon")
 	r.NewRoute().Name(LogEvent).Methods("POST").Path("/v6/events")
 }
 

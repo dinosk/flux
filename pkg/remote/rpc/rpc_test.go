@@ -32,7 +32,7 @@ func TestRPC(t *testing.T) {
 			t.Fatal(err)
 		}
 		go server.ServeConn(serverConn)
-		return NewClientV11(clientConn)
+		return NewClientV12(clientConn)
 	}
 	remote.ServerTestBattery(t, wrap)
 }

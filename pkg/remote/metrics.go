@@ -11,6 +11,7 @@ import (
 	"github.com/fluxcd/flux/pkg/api"
 	"github.com/fluxcd/flux/pkg/api/v10"
 	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
 	"github.com/fluxcd/flux/pkg/api/v6"
 	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/job"
@@ -116,6 +117,16 @@ func (i *instrumentedServer) SyncStatus(ctx context.Context, cursor string) (_ [
 		).Observe(time.Since(begin).Seconds())
 	}(time.Now())
 	return i.s.SyncStatus(ctx, cursor)
+}
+
+func (i *instrumentedServer) GitRepoConfigWithError(ctx context.Context, regenerate bool) (_ v12.GitConfig, err error) {
+	defer func(begin time.Time) {
+		requestDuration.With(
+			fluxmetrics.LabelMethod, "GitRepoConfigWithError",
+			fluxmetrics.LabelSuccess, fmt.Sprint(err == nil),
+		).Observe(time.Since(begin).Seconds())
+	}(time.Now())
+	return i.s.GitRepoConfigWithError(ctx, regenerate)
 }
 
 func (i *instrumentedServer) GitRepoConfig(ctx context.Context, regenerate bool) (_ v6.GitConfig, err error) {

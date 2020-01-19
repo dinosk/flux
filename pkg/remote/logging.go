@@ -8,6 +8,7 @@ import (
 	"github.com/fluxcd/flux/pkg/api"
 	"github.com/fluxcd/flux/pkg/api/v10"
 	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
 	"github.com/fluxcd/flux/pkg/api/v6"
 	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/job"
@@ -105,6 +106,15 @@ func (p *ErrorLoggingServer) GitRepoConfig(ctx context.Context, regenerate bool)
 		}
 	}()
 	return p.server.GitRepoConfig(ctx, regenerate)
+}
+
+func (p *ErrorLoggingServer) GitRepoConfigWithError(ctx context.Context, regenerate bool) (_ v12.GitConfig, err error) {
+	defer func() {
+		if err != nil {
+			p.logger.Log("method", "GitRepoConfigWithError", "error", err)
+		}
+	}()
+	return p.server.GitRepoConfigWithError(ctx, regenerate)
 }
 
 func (p *ErrorLoggingServer) Ping(ctx context.Context) (err error) {

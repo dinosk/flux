@@ -15,6 +15,7 @@ const (
 	SyncStatus              = "SyncStatus"
 	Export                  = "Export"
 	GitRepoConfig           = "GitRepoConfig"
+	GitRepoConfigWithError  = "GitRepoConfigWithError"
 
 	UpdateImages           = "UpdateImages"
 	UpdatePolicies         = "UpdatePolicies"
@@ -38,4 +39,5 @@ const (
 	RegisterDaemonV9  = "RegisterDaemonV9"
 	RegisterDaemonV10 = "RegisterDaemonV10"
 	RegisterDaemonV11 = "RegisterDaemonV11"
+	RegisterDaemonV12 = "RegisterDaemonV12"
 )

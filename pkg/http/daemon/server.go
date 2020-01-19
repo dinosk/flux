@@ -64,6 +64,7 @@ func NewHandler(s api.Server, r *mux.Router) http.Handler {
 	r.Get(transport.SyncStatus).HandlerFunc(handle.SyncStatus)
 	r.Get(transport.Export).HandlerFunc(handle.Export)
 	r.Get(transport.GitRepoConfig).HandlerFunc(handle.GitRepoConfig)
+	r.Get(transport.GitRepoConfigWithError).HandlerFunc(handle.GitRepoConfigWithError)
 
 	// These handlers persist to support requests from older fluxctls. In general we
 	// should avoid adding references to them so that they can eventually be removed.
@@ -225,6 +226,18 @@ func (s HTTPServer) GitRepoConfig(w http.ResponseWriter, r *http.Request) {
 		transport.WriteError(w, r, http.StatusBadRequest, err)
 	}
 	res, err := s.server.GitRepoConfig(r.Context(), regenerate)
+	if err != nil {
+		transport.ErrorResponse(w, r, err)
+	}
+	transport.JSONResponse(w, r, res)
+}
+
+func (s HTTPServer) GitRepoConfigWithError(w http.ResponseWriter, r *http.Request) {
+	var regenerate bool
+	if err := json.NewDecoder(r.Body).Decode(&regenerate); err != nil {
+		transport.WriteError(w, r, http.StatusBadRequest, err)
+	}
+	res, err := s.server.GitRepoConfigWithError(r.Context(), regenerate)
 	if err != nil {
 		transport.ErrorResponse(w, r, err)
 	}

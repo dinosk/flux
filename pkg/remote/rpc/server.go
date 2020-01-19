@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/fluxcd/flux/pkg/api/v10"
+	"github.com/fluxcd/flux/pkg/api/v12"
 
 	"github.com/pkg/errors"
 
@@ -207,10 +208,29 @@ type GitRepoConfigResponse struct {
 	ApplicationError *fluxerr.Error
 }
 
+type GitRepoConfigWithErrorResponse struct {
+	Result           v12.GitConfig
+	ApplicationError *fluxerr.Error
+}
+
 func (p *RPCServer) GitRepoConfig(regenerate bool, resp *GitRepoConfigResponse) error {
 	ctx, cancel := context.WithTimeout(context.Background(), p.timeout)
 	defer cancel()
 	v, err := p.s.GitRepoConfig(ctx, regenerate)
+	resp.Result = v
+	if err != nil {
+		if err, ok := errors.Cause(err).(*fluxerr.Error); ok {
+			resp.ApplicationError = err
+			return nil
+		}
+	}
+	return err
+}
+
+func (p *RPCServer) GitRepoConfigWithError(regenerate bool, resp *GitRepoConfigWithErrorResponse) error {
+	ctx, cancel := context.WithTimeout(context.Background(), p.timeout)
+	defer cancel()
+	v, err := p.s.GitRepoConfigWithError(ctx, regenerate)
 	resp.Result = v
 	if err != nil {
 		if err, ok := errors.Cause(err).(*fluxerr.Error); ok {

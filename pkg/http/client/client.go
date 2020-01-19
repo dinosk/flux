@@ -15,6 +15,7 @@ import (
 	"github.com/fluxcd/flux/pkg/api"
 	"github.com/fluxcd/flux/pkg/api/v10"
 	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
 	"github.com/fluxcd/flux/pkg/api/v6"
 	"github.com/fluxcd/flux/pkg/api/v9"
 	fluxerr "github.com/fluxcd/flux/pkg/errors"
@@ -127,6 +128,12 @@ func (c *Client) Export(ctx context.Context) ([]byte, error) {
 func (c *Client) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConfig, error) {
 	var res v6.GitConfig
 	err := c.methodWithResp(ctx, "POST", &res, transport.GitRepoConfig, regenerate)
+	return res, err
+}
+
+func (c *Client) GitRepoConfigWithError(ctx context.Context, regenerate bool) (v12.GitConfig, error) {
+	var res v12.GitConfig
+	err := c.methodWithResp(ctx, "POST", &res, transport.GitRepoConfigWithError, regenerate)
 	return res, err
 }
 

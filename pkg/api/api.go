@@ -1,10 +1,10 @@
 package api
 
-import "github.com/fluxcd/flux/pkg/api/v11"
+import v12 "github.com/fluxcd/flux/pkg/api/v12"
 
 // Server defines the minimal interface a Flux must satisfy to adequately serve a
 // connecting fluxctl. This interface specifically does not facilitate connecting
 // to Weave Cloud.
 type Server interface {
-	v11.Server
+	v12.Server
 }

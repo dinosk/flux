@@ -14,6 +14,7 @@ import (
 	"github.com/fluxcd/flux/pkg/api"
 	"github.com/fluxcd/flux/pkg/api/v10"
 	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
 	"github.com/fluxcd/flux/pkg/api/v6"
 	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/cluster"
@@ -637,6 +638,23 @@ func (d *Daemon) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConf
 		},
 		PublicSSHKey: publicSSHKey,
 		Status:       status,
+	}, nil
+}
+
+func (d *Daemon) GitRepoConfigWithError(ctx context.Context, regenerate bool) (v12.GitConfig, error) {
+	gitConfig, err := d.GitRepoConfig(ctx, regenerate)
+	if err != nil {
+		return v12.GitConfig{}, err
+	}
+	_, errorField := d.Repo.Status()
+	gitRepoError := ""
+	if errorField != nil {
+		gitRepoError = errorField.Error()
+	}
+
+	return v12.GitConfig{
+		gitConfig,
+		gitRepoError,
 	}, nil
 }
 

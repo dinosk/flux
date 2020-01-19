@@ -8,6 +8,7 @@ import (
 	"github.com/fluxcd/flux/pkg/api"
 	"github.com/fluxcd/flux/pkg/api/v10"
 	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
 	"github.com/fluxcd/flux/pkg/api/v6"
 	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/job"
@@ -66,4 +67,8 @@ func (bc baseClient) SyncStatus(context.Context, string) ([]string, error) {
 
 func (bc baseClient) GitRepoConfig(context.Context, bool) (v6.GitConfig, error) {
 	return v6.GitConfig{}, remote.UpgradeNeededError(errors.New("GitRepoConfig method not implemented"))
+}
+
+func (bc baseClient) GitRepoConfigWithError(context.Context, bool) (v12.GitConfig, error) {
+	return v12.GitConfig{}, remote.UpgradeNeededError(errors.New("GitRepoConfigWithError method not implemented"))
 }
