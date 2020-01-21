@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/fluxcd/flux/pkg/api/v10"
+	"github.com/fluxcd/flux/pkg/api/v12"
 
 	"github.com/pkg/errors"
 
@@ -203,7 +204,7 @@ func (p *RPCServer) SyncStatus(ref string, resp *SyncStatusResponse) error {
 }
 
 type GitRepoConfigResponse struct {
-	Result           v6.GitConfig
+	Result           v12.GitConfig
 	ApplicationError *fluxerr.Error
 }
 

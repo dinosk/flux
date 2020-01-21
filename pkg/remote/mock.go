@@ -11,6 +11,7 @@ import (
 	"github.com/fluxcd/flux/pkg/api"
 	"github.com/fluxcd/flux/pkg/api/v10"
 	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
 	"github.com/fluxcd/flux/pkg/api/v6"
 	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/guid"
@@ -47,7 +48,7 @@ type MockServer struct {
 	JobStatusAnswer job.Status
 	JobStatusError  error
 
-	GitRepoConfigAnswer v6.GitConfig
+	GitRepoConfigAnswer v12.GitConfig
 	GitRepoConfigError  error
 }
 
@@ -100,7 +101,7 @@ func (p *MockServer) JobStatus(context.Context, job.ID) (job.Status, error) {
 	return p.JobStatusAnswer, p.JobStatusError
 }
 
-func (p *MockServer) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConfig, error) {
+func (p *MockServer) GitRepoConfig(ctx context.Context, regenerate bool) (v12.GitConfig, error) {
 	return p.GitRepoConfigAnswer, p.GitRepoConfigError
 }
 

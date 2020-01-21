@@ -12,6 +12,11 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/fluxcd/flux/pkg/api"
+	"github.com/fluxcd/flux/pkg/api/v10"
+	"github.com/fluxcd/flux/pkg/api/v11"
+	"github.com/fluxcd/flux/pkg/api/v12"
+	"github.com/fluxcd/flux/pkg/api/v6"
+	"github.com/fluxcd/flux/pkg/api/v9"
 	"github.com/fluxcd/flux/pkg/cluster"
 	"github.com/fluxcd/flux/pkg/event"
 	"github.com/fluxcd/flux/pkg/git"
@@ -611,10 +616,10 @@ func (d *Daemon) SyncStatus(ctx context.Context, commitRef string) ([]string, er
 	return revs, nil
 }
 
-func (d *Daemon) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConfig, error) {
+func (d *Daemon) GitRepoConfig(ctx context.Context, regenerate bool) (v12.GitConfig, error) {
 	publicSSHKey, err := d.Cluster.PublicSSHKey(regenerate)
 	if err != nil {
-		return v6.GitConfig{}, err
+		return v12.GitConfig{}, err
 	}
 
 	origin := d.Repo.Origin()
@@ -625,7 +630,7 @@ func (d *Daemon) GitRepoConfig(ctx context.Context, regenerate bool) (v6.GitConf
 	if len(d.GitConfig.Paths) > 0 {
 		path = strings.Join(d.GitConfig.Paths, ",")
 	}
-	return v6.GitConfig{
+	return v12.GitConfig{
 		Remote: v6.GitRemoteConfig{
 			Remote: origin,
 			Branch: d.GitConfig.Branch,
